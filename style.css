@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+#messages { height: 300px; border: 1px solid #ccc; padding: 10px; overflow-y: scroll; margin-bottom: 10px; }
+#messageInput { width: 70%; padding: 8px; }
+button { padding: 8px 15px; }
+#status { margin-top: 10px; color: #666; }

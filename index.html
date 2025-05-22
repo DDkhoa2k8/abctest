@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebRTC Chat with PeerJS</title>
+</head>
+<body>
+  <h2>My ID: <span id="my-id"></span></h2>
+  <input id="connect-id" placeholder="Enter peer ID to connect">
+  <button onclick="connect()">Connect</button>
+  <hr>
+  <div>
+    <input id="msg" placeholder="Type message">
+    <button onclick="send()">Send</button>
+  </div>
+  <div id="chat"></div>
+
+  <script src="./PeerJS.js"></script>
+  <script>
+    const peer = new Peer(); // uses free PeerJS Cloud Server
+    let conn;
+
+    peer.on('open', id => {
+      document.getElementById('my-id').textContent = id;
+    });
+
+    peer.on('connection', c => {
+      conn = c;
+      conn.on('data', msg => showMessage(`Peer: ${msg}`));
+    });
+
+    function connect() {
+      const peerId = document.getElementById('connect-id').value;
+      conn = peer.connect(peerId);
+      conn.on('open', () => {
+        conn.on('data', msg => showMessage(`Peer: ${msg}`));
+      });
+    }
+
+    function send() {
+      const text = document.getElementById('msg').value;
+      if (conn && conn.open) {
+        conn.send(text);
+        showMessage(`You: ${text}`);
+      }
+    }
+
+    function showMessage(msg) {
+      const chat = document.getElementById('chat');
+      chat.innerHTML += `<div>${msg}</div>`;
+    }
+  </script>
+</body>
+</html>
